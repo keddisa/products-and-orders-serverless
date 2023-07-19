@@ -1,0 +1,25 @@
+{
+  "name": "util-db",
+  "version": "1.0.0",
+  "description": "DB Utility Layer",
+  "main": "app.js",
+  "repository": "https://github.com/aws/aws-sam-cli-app-templates/tree/master/nodejs18.x/hello-ts-pt",
+  "author": "Andrew Keddis",
+  "license": "MIT",
+  "dependencies": {
+    "esbuild": "^0.17.6"
+  },
+  "scripts": {
+    "build": "tsc",
+    "postbuild": "cp -R ./node_modules ./dist",
+    "unit": "jest",
+    "lint": "eslint '*.ts' --quiet --fix",
+    "compile": "tsc",
+    "test": "npm run compile && npm run unit"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.10",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.4"
+  }
+}

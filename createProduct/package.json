@@ -1,0 +1,36 @@
+{
+  "name": "create-product",
+  "version": "1.0.0",
+  "description": "Create Product for Products and Orders Management System",
+  "main": "app.js",
+  "repository": "https://github.com/aws/aws-sam-cli-app-templates/tree/master/nodejs18.x/hello-ts-pt",
+  "author": "Andrew Keddis",
+  "license": "MIT",
+  "dependencies": {
+    "@aws-lambda-powertools/logger": "^1.5.1",
+    "@aws-lambda-powertools/metrics": "^1.5.1",
+    "@aws-lambda-powertools/tracer": "^1.5.1",
+    "aws-sdk": "^2.1324.0",
+    "esbuild": "^0.17.6",
+    "ulid": "^2.3.0"
+  },
+  "scripts": {
+    "unit": "jest",
+    "lint": "eslint '*.ts' --quiet --fix",
+    "compile": "tsc",
+    "test": "npm run compile && npm run unit"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.109",
+    "@types/node": "^18.13.0",
+    "@typescript-eslint/eslint-plugin": "^5.46.1",
+    "@typescript-eslint/parser": "^5.46.1",
+    "esbuild-jest": "^0.5.0",
+    "eslint": "^8.30.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.5.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.4"
+  }
+}

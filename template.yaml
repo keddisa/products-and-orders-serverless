@@ -1,0 +1,360 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Serverless Backend for Products and Orders Management System
+
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 512
+    Tracing: Active
+  Api:
+    TracingEnabled: true
+    Cors:
+      AllowMethods: "'GET,POST,DELETE,PUT,PATCH,OPTIONS'"
+      AllowHeaders: "'content-type,Authorization'"
+      AllowOrigin: "'*'"
+
+Resources:
+  GetProducts:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: getProducts/
+      Handler: app.lambdaHandler
+      Runtime: nodejs18.x
+      Architectures:
+      - x86_64
+      Events:
+        GetProductsApi:
+          Type: Api
+          Properties:
+            Path: /products
+            Method: get
+      Layers:
+        - !Ref DBUtil
+        - !Ref MainHelpersUtil
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref Product
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: es2020
+        EntryPoints:
+        - app.ts
+        External:
+        - /opt/nodejs/db
+        - /opt/nodejs/mainHelpers
+
+  CreateProduct:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: createProduct/
+      Handler: app.lambdaHandler
+      Runtime: nodejs18.x
+      Architectures:
+      - x86_64
+      Events:
+        CreateProductApi:
+          Type: Api
+          Properties:
+            Path: /product
+            Method: post
+      Layers:
+        - !Ref DBUtil
+        - !Ref MainHelpersUtil
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref Product
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: es2020
+        EntryPoints:
+        - app.ts
+        External:
+        - /opt/nodejs/db
+        - /opt/nodejs/mainHelpers
+
+  GetProduct:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: getProduct/
+      Handler: app.lambdaHandler
+      Runtime: nodejs18.x
+      Architectures:
+      - x86_64
+      Events:
+        GetProductApi:
+          Type: Api
+          Properties:
+            Path: /product/{id}
+            Method: get
+      Layers:
+        - !Ref DBUtil
+        - !Ref MainHelpersUtil
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref Product
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: es2020
+        EntryPoints:
+        - app.ts
+        External:
+        - /opt/nodejs/db
+        - /opt/nodejs/mainHelpers
+
+  EditProduct:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: editProduct/
+      Handler: app.lambdaHandler
+      Runtime: nodejs18.x
+      Architectures:
+      - x86_64
+      Events:
+        EditProductApi:
+          Type: Api
+          Properties:
+            Path: /product/{id}
+            Method: patch
+      Layers:
+        - !Ref DBUtil
+        - !Ref MainHelpersUtil
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref Product
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: es2020
+        EntryPoints:
+        - app.ts
+        External:
+        - /opt/nodejs/db
+        - /opt/nodejs/mainHelpers
+
+  DeleteProduct:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: deleteProduct/
+      Handler: app.lambdaHandler
+      Runtime: nodejs18.x
+      Architectures:
+      - x86_64
+      Events:
+        DeleteProductApi:
+          Type: Api
+          Properties:
+            Path: /product/{id}
+            Method: delete
+      Layers:
+        - !Ref DBUtil
+        - !Ref MainHelpersUtil
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref Product
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: es2020
+        EntryPoints:
+        - app.ts
+        External:
+        - /opt/nodejs/db
+        - /opt/nodejs/mainHelpers
+
+  GetOrders:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: getOrders/
+      Handler: app.lambdaHandler
+      Runtime: nodejs18.x
+      Architectures:
+      - x86_64
+      Events:
+        GetOrdersApi:
+          Type: Api
+          Properties:
+            Path: /orders
+            Method: get
+      Layers:
+        - !Ref DBUtil
+        - !Ref MainHelpersUtil
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref Order
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: es2020
+        EntryPoints:
+        - app.ts
+        External:
+        - /opt/nodejs/db
+        - /opt/nodejs/mainHelpers
+
+  CreateOrder:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: createOrder/
+      Handler: app.lambdaHandler
+      Runtime: nodejs18.x
+      Architectures:
+      - x86_64
+      Events:
+        CreateOrderApi:
+          Type: Api
+          Properties:
+            Path: /order
+            Method: post
+      Layers:
+        - !Ref DBUtil
+        - !Ref MainHelpersUtil
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref Order
+        - DynamoDBCrudPolicy:
+            TableName: !Ref Product
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: es2020
+        EntryPoints:
+        - app.ts
+        External:
+        - /opt/nodejs/db
+        - /opt/nodejs/mainHelpers
+
+  GetOrder:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: getOrder/
+      Handler: app.lambdaHandler
+      Runtime: nodejs18.x
+      Architectures:
+      - x86_64
+      Events:
+        GetOrderApi:
+          Type: Api
+          Properties:
+            Path: /order/{id}
+            Method: get
+      Layers:
+        - !Ref DBUtil
+        - !Ref MainHelpersUtil
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref Order
+        - DynamoDBCrudPolicy:
+            TableName: !Ref Product
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: es2020
+        EntryPoints:
+        - app.ts
+        External:
+        - /opt/nodejs/db
+        - /opt/nodejs/mainHelpers
+
+  EditOrder:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: editOrder/
+      Handler: app.lambdaHandler
+      Runtime: nodejs18.x
+      Architectures:
+      - x86_64
+      Events:
+        EditOrderApi:
+          Type: Api
+          Properties:
+            Path: /order/{id}
+            Method: patch
+      Layers:
+        - !Ref DBUtil
+        - !Ref MainHelpersUtil
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref Order
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: es2020
+        EntryPoints:
+        - app.ts
+        External:
+        - /opt/nodejs/db
+        - /opt/nodejs/mainHelpers
+
+  # Layers
+
+  DBUtil:
+    Type: 'AWS::Serverless::LayerVersion'
+    Properties:
+      LayerName: DBUtil
+      Description: DynamoDB Helper Functions
+      ContentUri: ./layers/dbUtil/dist
+      CompatibleRuntimes:
+        - nodejs18.x
+      LicenseInfo: 'MIT'
+    Metadata:
+      BuildMethod: nodejs18.x
+      BuildProperties:
+        Minify: true
+        Target: es2020
+
+  MainHelpersUtil:
+    Type: 'AWS::Serverless::LayerVersion'
+    Properties:
+      LayerName: MainHelpersUtil
+      Description: Main Helpers
+      ContentUri: ./layers/mainHelpersUtil/dist
+      CompatibleRuntimes:
+        - nodejs18.x
+      LicenseInfo: 'MIT'
+    Metadata:
+      BuildMethod: nodejs18.x
+      BuildProperties:
+        Minify: true
+        Target: es2020
+
+  Product:
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      TableName: Product
+
+  Order:
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      TableName: Order
